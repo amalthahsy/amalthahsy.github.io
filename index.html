@@ -234,12 +234,19 @@
         
         /* Responsive Styles - MOBILE FIXES */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .mobile-menu {
+           .navbar {
+               padding: 0.8rem 1rem !important;
+              }
+           .navbar .logo {
+                font-size: 1.2rem !important;
+              }
+           .mobile-menu {
                 display: block !important;
-            }
+                font-size: 1.3rem !important;
+              }
+           .nav-links {
+                display: none !important;
+              }
             section {
                 padding: 60px 5% !important;
             }
@@ -417,6 +424,34 @@
             font-size: 0.85rem;
             color: #9ca3af;
         }
+        /* Force desktop styles */
+@media (min-width: 769px) {
+    .mobile-menu {
+        display: none !important;
+    }
+    .mobile-nav {
+        display: none !important;
+    }
+    .nav-links {
+        display: flex !important;
+    }
+}
+
+/* Mobile specific navbar fixes */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.7rem 1rem !important;
+    }
+    .navbar .nav-container {
+        padding: 0 !important;
+    }
+    .mobile-menu {
+        display: block !important;
+    }
+    .nav-links {
+        display: none !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -432,21 +467,21 @@
     
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">
-                <span class="gradient-text">Amal</span><span style="color: white;">.dev</span>
-            </a>
-            <div class="nav-links" style="display: flex; gap: 2rem;">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#certifications">Certifications</a>
-            </div>
-            <div class="mobile-menu" style="font-size: 1.8rem; cursor: pointer; color: #00ffff;">
-                <i class="fas fa-bars"></i>
-            </div>
+    <div class="nav-container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <a href="#home" style="font-size: 1.5rem; font-weight: bold; text-decoration: none;">
+            <span class="gradient-text">Amal</span><span style="color: white;">.dev</span>
+        </a>
+        <div class="nav-links" style="display: flex; gap: 1.5rem;">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#certifications">Certifications</a>
         </div>
-    </nav>
+        <div class="mobile-menu" style="font-size: 1.5rem; cursor: pointer; color: #00ffff;">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+</nav>
     
     <!-- Mobile Navigation -->
     <div class="mobile-nav" style="position: fixed; top: 65px; left: 0; width: 100%; background: rgba(15, 25, 35, 0.98); backdrop-filter: blur(12px); z-index: 999; display: none; flex-direction: column; padding: 1rem; border-bottom: 1px solid rgba(0,255,255,0.2);">
@@ -590,7 +625,7 @@
         // ============================================
         
         // 1. YOUR RESUME FILE - Place your resume.pdf in the same folder as this HTML file
-        const RESUME_FILE = "resume.pdf";
+        const RESUME_FILE = "Resume.pdf";
         
         // 2. YOUR EMAIL ADDRESS - For contact button
         const YOUR_EMAIL = "amalthahsy10@gmail.com";
