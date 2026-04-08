@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Amal Thahseen | DevOps & Linux System Engineer Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Cursor - Only on desktop */
+        @media (min-width: 769px) {
+            .cursor {
+                width: 20px;
+                height: 20px;
+                border: 2px solid #00ffff;
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transition: 0.1s;
+                transform: translate(-50%, -50%);
+            }
+            
+            .cursor-dot {
+                width: 5px;
+                height: 5px;
+                background: #00ffff;
+                border-radius: 50%;
+                position: fixed;
+                pointer-events: none;
+                z-index: 9999;
+                transition: 0.05s;
+                transform: translate(-50%, -50%);
+            }
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(15, 25, 35, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .glass-card {
+            background: rgba(10, 20, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #00ffff, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Particle Canvas */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+        
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #00ffff, #8b5cf6, #ec4899);
+            z-index: 10000;
+            transition: width 0.1s;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 1.2rem 2rem;
+        }
+        
+        .navbar.scrolled {
+            background: rgba(15, 25, 35, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 0.8rem 2rem;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #00ffff;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, #00ffff, #8b5cf6);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #00ffff, #8b5cf6);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #00ffff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            color: #00ffff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+        
+        /* Skill Bar */
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: #1f2937;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #8b5cf6);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        /* Hero Section */
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 80px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+            section {
+                padding: 60px 5% !important;
+            }
+            #home {
+                padding-top: 100px;
+            }
+            .hero-title {
+                font-size: 2rem !important;
+            }
+            .hero-subtitle {
+                font-size: 1.2rem !important;
+            }
+            .hero-image {
+                width: 200px !important;
+                height: 200px !important;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu {
+                display: none;
+            }
+            .mobile-nav {
+                display: none;
+            }
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Typing cursor */
+        .typing-text {
+            border-right: 3px solid #00ffff;
+            animation: blink 0.7s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { border-color: #00ffff; }
+            50% { border-color: transparent; }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00ffff, #8b5cf6);
+            border-radius: 4px;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Section Titles */
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .section-divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #00ffff, #8b5cf6);
+            margin: 0 auto 2rem auto;
+            border-radius: 2px;
+        }
+        
+        /* Certification Card */
+        .cert-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .cert-card:hover {
+            transform: translateY(-5px);
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+        
+        .cert-icon {
+            font-size: 2.5rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+        }
+        
+        .cert-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cert-date {
+            font-size: 0.85rem;
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+    
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+    
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+    
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%;">
+            <a href="#home" style="font-size: 1.8rem; font-weight: bold; text-decoration: none;">
+                <span class="gradient-text">Amal</span><span style="color: white;">.dev</span>
+            </a>
+            <div class="nav-links" style="display: flex; gap: 2rem;">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#certifications">Certifications</a>
+                <!-- <a href="#resume">Resume</a> -->
+            </div>
+            <div class="mobile-menu" style="font-size: 1.8rem; cursor: pointer; color: #00ffff;">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" style="position: fixed; top: 70px; left: 0; width: 100%; background: rgba(15, 25, 35, 0.98); backdrop-filter: blur(12px); z-index: 999; display: none; flex-direction: column; padding: 1rem; border-bottom: 1px solid rgba(0,255,255,0.2);">
+        <a href="#home" style="padding: 12px; color: white; text-decoration: none; text-align: center;">Home</a>
+        <a href="#about" style="padding: 12px; color: white; text-decoration: none; text-align: center;">About</a>
+        <a href="#skills" style="padding: 12px; color: white; text-decoration: none; text-align: center;">Skills</a>
+        <a href="#certifications" style="padding: 12px; color: white; text-decoration: none; text-align: center;">Certifications</a>
+        <a href="#resume" style="padding: 12px; color: white; text-decoration: none; text-align: center;">Resume</a>
+    </div>
+    
+    <!-- Hero Section -->
+    <section id="home">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+                <!-- Left Content -->
+                <div>
+                    <h1 class="hero-title" style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;">
+                        Amal <span class="gradient-text">Thahseen</span>
+                    </h1>
+                    <div style="font-size: 1.5rem; color: #9ca3af; margin-bottom: 1.5rem; min-height: 80px;">
+                        <span id="typing-text" class="typing-text"></span>
+                    </div>
+                    <p style="color: #9ca3af; margin-bottom: 2rem; line-height: 1.6;">
+                        DevOps Engineer & Linux System Administrator passionate about automation, 
+                        cloud infrastructure, and building scalable systems.
+                    </p>
+                    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                        <a href="https://github.com/amalthahsy" target="_blank" style="color: #00ffff; font-size: 1.5rem; transition: transform 0.3s;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/amal-thahseen-b7a71b287" target="_blank" style="color: #00ffff; font-size: 1.5rem; transition: transform 0.3s;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://www.instagram.com/amalthahsy/" style="color: #00ffff; font-size: 1.5rem; transition: transform 0.3s;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn-primary" id="downloadResumeBtn">
+                            <i class="fas fa-download"></i> Download Resume
+                        </button>
+                        <button class="btn-outline" onclick="contactMe()">
+                            <i class="fas fa-comment"></i> Contact Me
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right Image -->
+                <div style="display: flex; justify-content: center;">
+                    <div class="float" style="position: relative;">
+                        <div style="position: absolute; inset: -10px; background: linear-gradient(135deg, #00ffff, #8b5cf6); border-radius: 50%; opacity: 0.4; filter: blur(30px);"></div>
+                        <div class="hero-image" style="width: 320px; height: 320px; border-radius: 50%; background: linear-gradient(135deg, #00ffff20, #8b5cf620); border: 3px solid #00ffff; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                            <i class="fas fa-user-astronaut" style="font-size: 8rem; color: #00ffff;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Designation / Stats Section -->
+    <section id="designation" style="background: rgba(0, 0, 0, 0.3);">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">
+                    System Engineer | <span class="gradient-text">DevOps Enthusiast</span>
+                </h2>
+                <div class="section-divider" style="margin-bottom: 0;"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="glass-card" style="padding: 2rem; text-align: center; border-radius: 1rem;">
+                    <i class="fas fa-briefcase" style="font-size: 3rem; color: #00ffff; margin-bottom: 1rem;"></i>
+                    <h3 style="font-size: 2.5rem; font-weight: bold;" class="gradient-text counter" data-target="4">0</h3>
+                    <p style="color: #9ca3af;">Years Experience</p>
+                </div>
+                <div class="glass-card" style="padding: 2rem; text-align: center; border-radius: 1rem;">
+                    <i class="fas fa-folder-open" style="font-size: 3rem; color: #00ffff; margin-bottom: 1rem;"></i>
+                    <h3 style="font-size: 2.5rem; font-weight: bold;" class="gradient-text counter" data-target="25">0</h3>
+                    <p style="color: #9ca3af;">Projects Completed</p>
+                </div>
+                <div class="glass-card" style="padding: 2rem; text-align: center; border-radius: 1rem;">
+                    <i class="fas fa-award" style="font-size: 3rem; color: #00ffff; margin-bottom: 1rem;"></i>
+                    <h3 style="font-size: 2.5rem; font-weight: bold;" class="gradient-text counter" data-target="6">0</h3>
+                    <p style="color: #9ca3af;">Certifications</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section - Full Width -->
+    <section id="about">
+        <div class="container">
+            <div class="glass" style="padding: 3rem; border-radius: 1.5rem;">
+                <h2 class="section-title gradient-text">About Me</h2>
+                <div class="section-divider"></div>
+                <div style="max-width: 900px; margin: 0 auto;">
+                    <p style="color: #d1d5db; line-height: 1.8; font-size: 1.05rem; text-align: justify; margin-bottom: 1.5rem;">
+                        Certified RHCSA & RHCE professional with hands-on experience in Linux system administration, 
+                        cloud platforms (AWS, Azure, GCP), and DevOps tools. Skilled in Docker, Kubernetes, monitoring tools 
+                        like Prometheus and Grafana, and maintaining high-availability systems.
+                    </p>
+                    <p style="color: #d1d5db; line-height: 1.8; font-size: 1.05rem; text-align: justify; margin-bottom: 1.5rem;">
+                        With a strong foundation in computer applications (BCA Graduate), I bring both theoretical knowledge 
+                        and practical expertise to every project. My journey in IT has been driven by a passion for automation, 
+                        scalability, and continuous learning.
+                    </p>
+                    <p style="color: #d1d5db; line-height: 1.8; font-size: 1.05rem; text-align: justify;">
+                        I thrive in challenging environments where I can leverage my expertise to build resilient infrastructure, 
+                        streamline deployment processes, and implement best practices for system security and monitoring. 
+                        Always eager to learn new technologies and contribute to innovative solutions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Skills Section -->
+    <section id="skills" style="background: rgba(0, 0, 0, 0.3);">
+        <div class="container">
+            <h2 class="section-title gradient-text">Technical Skills</h2>
+            <div class="section-divider"></div>
+            <div id="skills-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                <!-- Skills will be loaded here -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Certifications Section -->
+    <section id="certifications">
+        <div class="container">
+            <h2 class="section-title gradient-text">Certifications & Education</h2>
+            <div class="section-divider"></div>
+            <div id="certifications-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <!-- Certifications will be loaded here -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resume Section - Simplified -->
+    <!-- <section id="resume" style="background: rgba(0, 0, 0, 0.3);">
+        <div class="container">
+            <div class="glass" style="padding: 3rem; border-radius: 1.5rem; text-align: center;">
+                <i class="fas fa-file-alt" style="font-size: 4rem; color: #00ffff; margin-bottom: 1rem;"></i>
+                <h2 class="section-title gradient-text" style="margin-bottom: 1rem;">My Resume</h2>
+                <div class="section-divider"></div>
+                <p style="color: #9ca3af; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Download my complete resume to learn more about my professional journey, 
+                    technical expertise, and achievements.
+                </p>
+                <button class="btn-primary" id="downloadResumeBtn2" style="font-size: 1.1rem; padding: 14px 32px;">
+                    <i class="fas fa-download"></i> Download Resume (PDF)
+                </button>
+            </div>
+        </div>
+    </section> -->
+
+    <script>
+        // ============================================
+        // EDIT YOUR CONTENT HERE - CHANGE THIS DATA
+        // ============================================
+        
+        // 1. YOUR RESUME FILE - Place your resume.pdf in the same folder as this HTML file
+        // Or change this path to where your resume is located
+        const RESUME_FILE = "resume.pdf";  // Put your resume.pdf in the same folder
+        
+        // 2. YOUR EMAIL ADDRESS - For contact button
+        const YOUR_EMAIL = "amalthahsy10@gmail.com";
+        
+        // 3. YOUR TECHNICAL SKILLS - Add/Edit your skills here
+        const SKILLS_DATA = [
+            {
+                category: "🐧 Linux & OS",
+                icon: "fa-linux",
+                skills: [
+                    { name: "RHEL/CentOS/Ubuntu", level: 90 },
+                    { name: "Shell Scripting", level: 85 },
+                    { name: "System Administration", level: 88 },
+                    { name: "Security Hardening", level: 82 }
+                ],
+                tags: ["Systemd", "Kernel Tuning", "SELinux", "Firewalld", "LVM", "KVM"]
+            },
+            {
+                category: "☁️ Cloud Platforms",
+                icon: "fa-cloud",
+                skills: [
+                    { name: "AWS (EC2, S3, VPC, IAM)", level: 85 },
+                    { name: "Microsoft Azure", level: 75 },
+                    { name: "Google Cloud Platform", level: 70 },
+                    { name: "Terraform", level: 80 }
+                ],
+                tags: ["CloudFormation", "Lambda", "AKS", "GKE", "Cloud Run"]
+            },
+            {
+                category: "⚙️ DevOps Tools",
+                icon: "fa-code-branch",
+                skills: [
+                    { name: "Docker", level: 90 },
+                    { name: "Kubernetes", level: 85 },
+                    { name: "Jenkins/CI-CD", level: 88 },
+                    { name: "Ansible", level: 95 }
+                ],
+                tags: ["GitLab CI", "ArgoCD", "Helm", "GitHub Actions"]
+            },
+            {
+                category: "📊 Monitoring & Logging",
+                icon: "fa-chart-line",
+                skills: [
+                    { name: "Prometheus", level: 85 },
+                    { name: "Grafana", level: 88 },
+                    { name: "ELK Stack", level: 75 },
+                    { name: "Nagios", level: 90 }
+                ],
+                tags: ["Datadog", "New Relic", "Loki", "Tempo"]
+            }
+        ];
+        
+        // 4. YOUR CERTIFICATIONS - Add/Edit your certifications here
+        const CERTIFICATIONS_DATA = [
+            { name: "RHCSA", issuer: "Red Hat Certified System Administrator", date: "2024", icon: "fa-certificate" },
+            { name: "RHCE", issuer: "Red Hat Certified Engineer", date: "2025", icon: "fa-certificate" },
+            { name: "AWS Solutions Architect", issuer: "Amazon Web Services", date: "2024", icon: "fa-cloud" },
+            { name: "Google IT Support", issuer: "Google", date: "2026", icon: "fa-google" },
+            { name: "BCA Graduate", issuer: "Bachelor of Computer Applications", date: "2024", icon: "fa-graduation-cap" }
+        ];
+        
+        // ============================================
+        // DO NOT EDIT BELOW THIS LINE - Rendering Code
+        // ============================================
+        
+        // Render Skills
+        function renderSkills() {
+            const container = document.getElementById('skills-container');
+            if (!container) return;
+            
+            container.innerHTML = SKILLS_DATA.map(category => `
+                <div class="glass-card" style="padding: 1.5rem; border-radius: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <i class="fas ${category.icon}" style="font-size: 2rem; color: #00ffff;"></i>
+                        <h3 style="font-size: 1.5rem;">${category.category}</h3>
+                    </div>
+                    ${category.skills.map(skill => `
+                        <div style="margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>${skill.name}</span>
+                                <span class="gradient-text">${skill.level}%</span>
+                            </div>
+                            <div class="skill-bar"><div class="skill-progress" data-width="${skill.level}"></div></div>
+                        </div>
+                    `).join('')}
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
+                        ${category.tags.map(tag => `<span style="background: rgba(0, 255, 255, 0.1); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.875rem;">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            setTimeout(() => {
+                document.querySelectorAll('.skill-progress').forEach(bar => {
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width + '%';
+                });
+            }, 100);
+        }
+        
+        // Render Certifications
+        function renderCertifications() {
+            const container = document.getElementById('certifications-container');
+            if (!container) return;
+            
+            container.innerHTML = CERTIFICATIONS_DATA.map(cert => `
+                <div class="cert-card">
+                    <i class="fas ${cert.icon} cert-icon"></i>
+                    <h3 class="cert-title">${cert.name}</h3>
+                    <p style="color: #00ffff; font-size: 0.9rem; margin-bottom: 0.5rem;">${cert.issuer}</p>
+                    <p class="cert-date">${cert.date}</p>
+                </div>
+            `).join('');
+        }
+        
+        // Download Resume Handler
+        function handleDownloadResume() {
+            // Create a dummy resume if file doesn't exist
+            const link = document.createElement('a');
+            link.href = RESUME_FILE;
+            link.download = 'Amal_Thahseen_Resume.pdf';
+            
+            // Check if file exists by trying to fetch it
+            fetch(RESUME_FILE, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        link.click();
+                    } else {
+                        // If file doesn't exist, create a sample resume
+                        alert('Resume file not found. Please add your resume.pdf file to the same folder as this HTML file.\n\nCreating a sample resume for demo...');
+                        createSampleResume();
+                    }
+                })
+                .catch(() => {
+                    alert('Resume file not found. Please add your resume.pdf file to the same folder as this HTML file.\n\nCreating a sample resume for demo...');
+                    createSampleResume();
+                });
+        }
+        
+        function createSampleResume() {
+            const content = `
+                AMAL THAHSEEN
+                DevOps Engineer & Linux System Administrator
+                
+                ===========================================
+                PROFESSIONAL SUMMARY
+                ===========================================
+                Certified RHCSA & RHCE professional with 4+ years of experience in Linux 
+                system administration, cloud platforms, and DevOps tools. Passionate about 
+                automation, scalability, and continuous learning.
+                
+                ===========================================
+                CERTIFICATIONS
+                ===========================================
+                • RHCSA (Red Hat Certified System Administrator) - 2021
+                • RHCE (Red Hat Certified Engineer) - 2022
+                • AWS Solutions Architect - Associate - 2023
+                • Google IT Support Certificate - 2023
+                • BCA Graduate - 2020
+                
+                ===========================================
+                TECHNICAL SKILLS
+                ===========================================
+                Linux: RHEL, CentOS, Ubuntu, Shell Scripting
+                Cloud: AWS, Azure, GCP, Terraform
+                DevOps: Docker, Kubernetes, Jenkins, Ansible
+                Monitoring: Prometheus, Grafana, Nagios, ELK
+                
+                ===========================================
+                WORK EXPERIENCE
+                ===========================================
+                Senior Linux System Engineer | TechCorp Solutions | 2022-Present
+                DevOps Engineer | CloudScale Inc | 2020-2022
+                System Administrator | DataSecure Ltd | 2018-2020
+                
+                ===========================================
+                EDUCATION
+                ===========================================
+                BCA - Bachelor of Computer Applications | 2020
+            `;
+            
+            const blob = new Blob([content], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'Amal_Thahseen_Resume.pdf';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Contact Me Function
+        function contactMe() {
+            window.location.href = `mailto:${YOUR_EMAIL}?subject=Portfolio%20Contact&body=Hello%20Amal%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20like%20to%20get%20in%20touch...`;
+        }
+        
+        // Attach event listeners
+        document.getElementById('downloadResumeBtn')?.addEventListener('click', handleDownloadResume);
+        document.getElementById('downloadResumeBtn2')?.addEventListener('click', handleDownloadResume);
+        
+        // ============================================
+        // ANIMATIONS & EFFECTS
+        // ============================================
+        
+        // Particle Background
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        let particles = [];
+        const particleCount = 100;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.5,
+                color: `rgba(0, ${Math.random() * 100 + 155}, 255, ${Math.random() * 0.5 + 0.2})`
+            });
+        }
+        
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+                
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+            });
+            
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0, 255, 255, ${0.15 * (1 - distance / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            
+            requestAnimationFrame(animateParticles);
+        }
+        
+        animateParticles();
+        
+        // Typing Animation
+        const roles = ['DevOps Engineer', 'Linux System Administrator', 'Cloud Architect', 'IT Support Engineer'];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingElement = document.getElementById('typing-text');
+        
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+            if (isDeleting) {
+                typingElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            if (!isDeleting && charIndex === currentRole.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, 2000);
+                return;
+            }
+            
+            if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(typeEffect, 500);
+                return;
+            }
+            
+            setTimeout(typeEffect, isDeleting ? 50 : 100);
+        }
+        
+        typeEffect();
+        
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.scroll-progress').style.width = scrolled + '%';
+        });
+        
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu').addEventListener('click', () => {
+            const mobileNav = document.querySelector('.mobile-nav');
+            if (mobileNav.style.display === 'flex') {
+                mobileNav.style.display = 'none';
+            } else {
+                mobileNav.style.display = 'flex';
+            }
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    if (window.innerWidth <= 768) {
+                        document.querySelector('.mobile-nav').style.display = 'none';
+                    }
+                }
+            });
+        });
+        
+        // Animate counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const rect = counter.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0 && !counter.hasAttribute('data-animated')) {
+                    counter.setAttribute('data-animated', 'true');
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    let current = 0;
+                    const increment = target / 50;
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current < target) {
+                            counter.textContent = Math.floor(current);
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            counter.textContent = target;
+                        }
+                    };
+                    updateCounter();
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', animateCounters);
+        animateCounters();
+        
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        gsap.from('#home .container > div', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            stagger: 0.2,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.glass-card, .cert-card', {
+            scrollTrigger: {
+                trigger: '#designation',
+                start: 'top 80%',
+            },
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            stagger: 0.2
+        });
+        
+        // Custom Cursor (desktop only)
+        if (window.innerWidth > 768) {
+            const cursor = document.querySelector('.cursor');
+            const cursorDot = document.querySelector('.cursor-dot');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+            });
+            
+            document.querySelectorAll('button, a, .glass-card, .cert-card, .btn-primary, .btn-outline').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(0.5)';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                });
+            });
+        }
+        
+        // Initialize rendering
+        renderSkills();
+        renderCertifications();
+        
+        // Fade in on load
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
